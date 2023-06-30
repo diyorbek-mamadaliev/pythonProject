@@ -1,0 +1,240 @@
+{% extends 'base.html' %}
+{% block content %}
+<html>
+<br>
+<head>
+    <title>ChatGPT Chat Interface</title>
+    <style>
+        .copy-button::before {
+            content: "\f0ea";
+            font-family: "Font Awesome\ 5 Free";
+            font-weight: 900;
+            margin-right: 5px;
+        }
+
+        .copy-button {
+            position: absolute;
+            bottom: 5px;
+            right: 5px;
+            background-color: #4CAF50;
+            color: #fff;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            padding: 2px 5px;  /* Adjusted padding */
+            transition: background-color 0.3s ease;
+            font-size: 12px;  /* Adjusted font size */
+        }
+
+        .copy-button:hover {
+            background-color: #45a049;
+        }
+
+        .resume-button {
+            position: absolute;
+            bottom: 5px;
+            right: 55px;
+            background-color: #428bca;
+            color: #fff;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            padding: 2px 5px;  /* Adjusted padding */
+            transition: background-color 0.3s ease;
+            font-size: 12px;  /* Adjusted font size */
+        }
+
+        .resume-button:hover {
+            background-color: #3071a9;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+        }
+
+        .chat-container {
+            width: 97%;
+            height: 600px;
+            margin: 0 auto;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .chat-log {
+            flex-grow: 1;
+            overflow-y: auto;
+            padding-bottom: 10px;
+        }
+
+
+        .chat-bubble {
+            background-color: #f2f2f2;
+            color: #333;
+            border-radius: 5px;
+            padding: 10px;
+            margin-bottom: 10px;
+            position: relative;
+        }
+
+        .user-bubble {
+            background-color: #d5f5e3;
+            color: #333;
+            border-radius: 5px;
+            padding: 10px;
+            margin-bottom: 10px;
+            text-align: right;
+        }
+
+        .chat-input-container {
+            display: flex;
+            margin-top: 10px;
+        }
+
+        .chat-input {
+            flex-grow: 1;
+            padding: 5px;
+            border-radius: 4px;
+        }
+
+        .chat-button {
+            margin-left: 10px;
+            padding: 5px 10px;
+            background-color: #4CAF50;
+            color: #fff;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        .chat-button:hover {
+            background-color: #45a049;
+        }
+
+        .loader {
+            width: 20px;
+            height: 20px;
+            margin-left: 5px;
+            border: 3px solid #f3f3f3;
+            border-top: 3px solid #3498db;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        .intro-container {
+            text-align: center;
+            margin-bottom: 20px;
+            margin-left: 40px;
+            margin-right: 40px;
+
+        }
+
+        .intro-text {
+            font-size: 18px;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+    <script>
+        $(document).ready(function() {
+            var chatLog = $('#chat-log');
+
+            $('#chat-form').on('submit', function(event) {
+                event.preventDefault();
+
+                var inputText = $('#input_text').val().trim();
+                if (inputText !== '') {
+                    chatLog.append('<div class="user-bubble">' + inputText + '</div>');
+                    $('#input_text').val('');
+                    chatLog.append('<div class="chat-bubble loader"></div>');
+
+                    $.ajax({
+                        type: 'POST',
+                        url: '{% url "hod_chat" %}',
+                        data: {
+                            'input_text': inputText,
+                            'csrfmiddlewaretoken': '{{ csrf_token }}'
+                        },
+                        success: function(response) {
+                            var generatedText = response.generated_text;
+                            chatLog.children().last().remove();
+                            addChatBubble(generatedText);
+                            chatLog.scrollTop(chatLog[0].scrollHeight);
+                        },
+                        error: function(xhr) {
+                            console.log(xhr.responseText);
+                        }
+                    });
+                }
+            });
+
+            function addChatBubble(message) {
+                var bubble = $('<div class="chat-bubble"></div>');
+                var text = $('<span class="bubble-text"></span>');
+                var copyButton = $('<button class="copy-button"></button>');
+                var resumeButton = $('<button class="resume-button">Продолжить Текст</button>');
+
+                var index = 0;
+                var typingSpeed = 40;
+
+                var interval = setInterval(function() {
+                    if (index < message.length) {
+                        var partialMessage = message.substring(0, index + 1);
+                        text.text(partialMessage);
+                        index++;
+                    } else {
+                        clearInterval(interval);
+                        text.text(message);
+                        bubble.append(copyButton);
+                        bubble.append(resumeButton);
+                    }
+                }, typingSpeed);
+
+                copyButton.on('click', function() {
+                    var textToCopy = text.text();
+                    copyToClipboard(textToCopy);
+                });
+
+                resumeButton.on('click', function() {
+                    var copiedText = text.text();
+                    $('#input_text').val('продолжи: ' + copiedText);
+                    $('#chat-form').submit();
+                });
+
+                bubble.append(text);
+                chatLog.append(bubble);
+            }
+
+            function copyToClipboard(text) {
+                var tempInput = $('<input>');
+                $('body').append(tempInput);
+                tempInput.val(text).select();
+                document.execCommand('copy');
+                tempInput.remove();
+            }
+        });
+    </script>
+</head>
+<body>
+    <div class="intro-container">
+        <h1>Общая Медицина 🔬</h1>
+        <p class="intro-text" style="font-size: 14px">Вы можете задавать боту множество вопросов по теме медицины, таких как: - Какие симптомы у пневмонии?- Как лечить аллергию на пищевые продукты? - Какие основные симптомы инфаркта? - Что такое анемия и как ее лечить? - Какие методы диагностики рака существуют? Бот сможет найти и предоставить вам соответствующую информацию, объяснить определенные медицинские термины и помочь вам лучше понять условия здоровья.</p>
+    </div>
+    <div class="chat-container">
+        <div id="chat-log" class="chat-log"></div>
+        <form id="chat-form" class="chat-input-container">
+            <input type="text" id="input_text" class="chat-input" placeholder="Напишите свой вопрос..." required>
+            <button type="submit" class="chat-button">Отправить</button>
+        </form>
+    </div>
+</body>
+</html>
+<br>
+{% endblock %}
