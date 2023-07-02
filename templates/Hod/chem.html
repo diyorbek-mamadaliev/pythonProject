@@ -192,12 +192,12 @@
       flex-basis: calc(20% - 10px);
       padding: 0px;
       border-radius: 10px;
-      background-color: #f8f9fa;
+      background-color: #365f8a;
     }
 
     .card-title {
       font-weight: bold;
-      color: #333333;
+      color: white;
       font-size: 14px;
       margin-bottom: 0px;
     }
@@ -205,20 +205,6 @@
     .card-body {
       font-size: 12px;
     }
-<!--    Chat Avatar-->
-.avatar {
-  width: 30px;
-  height: 30px;
-  border-radius: 50%;
-  margin-right: 8px;
-  object-fit: cover;
-}
-
-.chat-bubble {
-  display: flex;
-  align-items: center;
-}
-
     </style>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
@@ -308,40 +294,46 @@
 </head>
 <body>
     <div class="intro-container">
-        <h3>Общая Медицина 💊</h3>
+        <h3>Химия 🔬</h3>
         <br>
         <div class="card-container">
+    <!-- Card 1 -->
     <div class="card">
-      <div class="card-body">
-        <h3 class="card-title">Медицинский глоссарий</h3>
-      </div>
+        <div class="card-body">
+            <h3 class="card-title">Периодическая таблица и информация об элементах</h3>
+        </div>
     </div>
 
+    <!-- Card 2 -->
     <div class="card">
-      <div class="card-body">
-        <h3 class="card-title">Подготовка к экзаменам</h3>
-      </div>
+        <div class="card-body">
+            <h3 class="card-title">Химические реакции и уравнения</h3>
+        </div>
     </div>
 
+
+    <!-- Card 4 -->
     <div class="card">
-      <div class="card-body">
-        <h3 class="card-title">Поиск книг и материалов</h3>
-      </div>
+        <div class="card-body">
+            <h3 class="card-title">Стехиометрия и расчет молей</h3>
+        </div>
     </div>
 
+    <!-- Card 5 -->
     <div class="card">
-      <div class="card-body">
-        <h3 class="card-title">Поддержка исследований</h3>
-      </div>
+        <div class="card-body">
+            <h3 class="card-title">Лабораторные пособия и руководства</h3>
+        </div>
     </div>
 
+    <!-- Card 6 -->
     <div class="card">
-      <div class="card-body">
-        <h3 class="card-title">Анализ данных</h3>
-      </div>
+        <div class="card-body">
+            <h3 class="card-title">Вычислительная химия и моделирование</h3>
+        </div>
     </div>
+</div>
 
-         </div>
     <div class="chat-container">
         <div id="chat-log" class="chat-log"></div>
         <form id="chat-form" class="chat-input-container">

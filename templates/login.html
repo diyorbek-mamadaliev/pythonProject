@@ -50,15 +50,18 @@
                               <input class="form-control" type="password" placeholder="Пароль" name="password">
                            </div>
                            <div class="form-group">
-                              <button class="btn btn-primary btn-block" type="submit">Войти</button>
+                              <button style="background-color: #365f8a; border: 0px; color: white" class="btn btn-primary btn-block" type="submit">Войти</button>
                            </div>
                         </form>
-                        <div class="text-center forgotpass"><a href="forgot-password.html">Забыли Пароль?</a></div>
+<!--                        <div class="text-center forgotpass"><a href="forgot-password.html">Забыли Пароль?</a></div>-->
                         <div class="login-or">
                            <span class="or-line"></span>
-                           <span class="span-or">!</span>
+                           <span class="span-or">ИЛИ</span>
                         </div>
-                        <div class="text-center dont-have">Мы напоминаем вам, что нарушение данных правил может привести к немедленной блокировке вашего аккаунта. При обнаружении нарушений мы сохраняем право принять соответствующие меры для защиты наших пользователей и обеспечения безопасности нашего сайта.</div>
+                          <div class="text-center">
+                           <a href="{% url 'register' %}">Нет аккаунта? Зарегистрироваться</a>
+                        </div>
+                        <div class="text-center dont-have">При обнаружении нарушений мы сохраняем право принять соответствующие меры для защиты наших пользователей и обеспечения безопасности нашего сайта.</div>
                      </div>
                   </div>
                </div>

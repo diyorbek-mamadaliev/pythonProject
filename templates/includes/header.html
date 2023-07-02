@@ -4,9 +4,6 @@
         font-size: 20px; /* Adjust the font size as needed */
         font-weight: bold;
     }
-    .dropdown:hover .dropdown-menu {
-        display: block;
-    }
 </style>
 
 <div class="header">
@@ -18,59 +15,40 @@
          <img src="{% static 'assets/img/logo-small.png' %}" alt="Logo" width="30" height="30">
       </a>
    </div>
+   <div class="top-nav-search mt-3">
+                <h4>
+                    <strong>
+                        Привет,
+                    </strong>&nbsp;<span>
+                    {{ user.first_name }} {{ user.last_name }}
+                </span>!</h4>
+            </div>
 
    <a class="mobile_btn" id="mobile_btn">
       <i class="fas fa-bars"></i>
    </a>
    <ul class="nav user-menu">
-      <li class="nav-item dropdown">
-         <a class="nav-link dropdown-toggle" style="color: #6495ED" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+      <li class="nav-item">
+         <a class="nav-link" style="color: #365f8a" href="{% url 'home' %}">
             Общая Медицина
          </a>
-         <div class="dropdown-menu dropdown-menu-right">
-            <a class="dropdown-item" href="index.html">Медицинские Термины</a>
-            <a class="dropdown-item" href="teacher-dashboard.html">Книги и Материалы</a>
-            <a class="dropdown-item" href="student-dashboard.html">Научная Работа</a>
-            <a class="dropdown-item" href="student-dashboard.html">Короткий Обзор Документа</a>
-            <a class="dropdown-item" href="student-dashboard.html">Анализ Данных</a>
-         </div>
       </li>
-      <li class="nav-item dropdown">
-         <a class="nav-link dropdown-toggle" style="color: #6495ED" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+      <li class="nav-item">
+         <a class="nav-link" style="color: #365f8a" href="students.html">
             Тесты
          </a>
-         <div class="dropdown-menu dropdown-menu-right">
-            <a class="dropdown-item" href="students.html">Генерировать Тест</a>
-            <a class="dropdown-item" href="student-details.html">Создать карточки с вопросами</a>
-            <a class="dropdown-item" href="add-student.html">Генерировать ответы на тесты</a>
-         </div>
       </li>
-      <li class="nav-item dropdown">
-         <a class="nav-link dropdown-toggle" style="color: #6495ED" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+      <li class="nav-item">
+         <a class="nav-link" style="color: #365f8a" href="{% url 'chem' %}">
             Химия
          </a>
-         <div class="dropdown-menu dropdown-menu-right">
-            <a class="dropdown-item" href="teachers.html">Периодическая Таблица и Элементы</a>
-            <a class="dropdown-item" href="teacher-details.html">Химическая Реакция</a>
-            <a class="dropdown-item" href="add-teacher.html">Стехиометрия и расчет молей</a>
-            <a class="dropdown-item" href="edit-teacher.html">Органическая Химия</a>
-            <a class="dropdown-item" href="edit-teacher.html">Лабораторная (Пошаговые Инструкции)</a>
-            <a class="dropdown-item" href="edit-teacher.html">Вычислительная химия и моделирование</a>
-         </div>
       </li>
-      <li class="nav-item dropdown">
-         <a class="nav-link dropdown-toggle" style="color: #6495ED" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+      <li class="nav-item">
+         <a class="nav-link" style="color: #365f8a" href="departments.html">
             Биология
          </a>
-         <div class="dropdown-menu dropdown-menu-right">
-            <a class="dropdown-item" href="departments.html">Биологические концепции и процессы</a>
-            <a class="dropdown-item" href="add-department.html">Анатомия и физиология</a>
-            <a class="dropdown-item" href="edit-department.html">Исследования в области наук о жизни</a>
-            <a class="dropdown-item" href="edit-department.html">Клеточная и молекулярная биология</a>
-            <a class="dropdown-item" href="edit-department.html">Генетика</a>
-         </div>
       </li>
-      <li class="nav-item dropdown has-arrow">
+      <li class="nav-item has-arrow">
          <a href="#" class="dropdown-toggle nav-link" data-toggle="dropdown">
             {% if user.profile_pic == "" %}
             <span class="user-img"><img class="rounded-circle" src="{% static 'assets/img/noimg.png' %}" width="31" alt="Profile_Picture"></span>
@@ -88,7 +66,7 @@
                   {% endif %}
                </div>
                <div class="user-text">
-                  <h6>{{user.first_name}}&nbsp; {{user.last_name}}</h6>
+                  <h6>{{user.first_name}}</h6>
                   <p class="text-muted mb-0">Пользователь</p>
                </div>
             </div>

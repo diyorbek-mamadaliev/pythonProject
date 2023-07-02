@@ -72,3 +72,22 @@ def PROFILE_UPDATE(request):
             messages.error(request, 'Failed to Update Profile')
 
     return render(request, 'profile.html')
+
+
+def register(request):
+    if request.method == 'POST':
+        first_name = request.POST.get('first_name')
+        last_name = request.POST.get('last_name')
+        email = request.POST.get('email')
+        password = request.POST.get('password')
+
+        # Create a new User object
+        user = CustomUser.objects.create_user(username=email, email=email, password=password)
+        user.first_name = first_name
+        user.last_name = last_name
+        user.save()
+
+        # Redirect to the registration success page
+        return redirect('login')
+
+    return render(request, 'registration.html')
