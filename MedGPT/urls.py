@@ -16,8 +16,12 @@ urlpatterns = [
     # Main
     path('Hod/Home', HOD_views.HOME, name='home'),
     path('Hod/Chem', HOD_views.CHEM, name='chem'),
+    path('Hod/Bio', HOD_views.BIO, name='bio'),
+    path('Hod/Bot', HOD_views.BOT, name='bot'),
     path('hod-chat/', HOD_views.hod_chat, name='hod_chat'),
     path('chem-chat/', HOD_views.chem_chat, name='chem_chat'),
+    path('bio-chat/', HOD_views.bio_chat, name='bio_chat'),
+    path('bot-chat/', HOD_views.bot_chat, name='bot_chat'),
     # Profile
     path('profile', views.PROFILE, name='profile'),
     path('Profile/update', views.PROFILE_UPDATE, name='profile_update'),

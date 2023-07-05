@@ -23,7 +23,7 @@
             cursor: pointer;
             padding: 2px 5px;  /* Adjusted padding */
             transition: background-color 0.3s ease;
-            font-size: 12px;  /* Adjusted font size */
+            font-size: 16px;  /* Adjusted font size */
         }
 
         .copy-button:hover {
@@ -34,14 +34,14 @@
             position: absolute;
             bottom: 5px;
             right: 35px;
-            background-color: #428bca;
+            background-color: #365f8a;
             color: #fff;
             border: none;
             border-radius: 4px;
             cursor: pointer;
             padding: 2px 5px;  /* Adjusted padding */
             transition: background-color 0.3s ease;
-            font-size: 12px;  /* Adjusted font size */
+            font-size: 16px;  /* Adjusted font size */
         }
 
         .resume-button:hover {
@@ -56,6 +56,7 @@
             width: 100%;
             height: 620px;
             margin: 0 auto;
+            background-color: #f8f9fa;
             border: 1px solid #ccc;
             border-radius: 10px;
             padding: 20px;
@@ -67,17 +68,35 @@
             flex-grow: 1;
             overflow-y: auto;
             padding-bottom: 10px;
+            scrollbar-width: thin; /* For Firefox */
+            scrollbar-color: #365f8a #c2e0ff; /* For Firefox */
+            padding-right: 10px; /* Adjust the padding as needed */
+            margin-right: -10px;
+
         }
+        .chat-log::-webkit-scrollbar {
+        width: 12px; /* Adjust the width as needed */
+}
+
+        .chat-log::-webkit-scrollbar-track {
+        background-color: #f2f2f2;
+}
+
+        .chat-log::-webkit-scrollbar-thumb {
+        background-color: #365f8a;
+}
 
 
         .chat-bubble {
             background-color: #f2f2f2;
             color: #333;
             border-radius: 10px;
-            padding: 10px;
+            padding: 40px;
             margin-bottom: 10px;
             position: relative;
             text-align: left;
+            font-size: 20px;
+            white-space: pre-wrap;
         }
 
         .user-bubble {
@@ -87,6 +106,7 @@
             padding: 10px;
             margin-bottom: 10px;
             text-align: right;
+            font-size: 16px;
         }
 
         .chat-input-container {
@@ -192,12 +212,13 @@
       flex-basis: calc(20% - 10px);
       padding: 0px;
       border-radius: 10px;
-      background-color: #365f8a;
+      background-color: #f8f9fa;
+      background-color: white;
     }
 
     .card-title {
       font-weight: bold;
-      color: white;
+      color: grey;
       font-size: 14px;
       margin-bottom: 0px;
     }
@@ -205,6 +226,20 @@
     .card-body {
       font-size: 12px;
     }
+<!--    Chat Avatar-->
+.avatar {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  margin-right: 8px;
+  object-fit: cover;
+}
+
+.chat-bubble {
+  display: flex;
+  align-items: center;
+}
+
     </style>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
@@ -217,7 +252,7 @@
 
             var inputText = $('#input_text').val().trim();
             if (inputText !== '') {
-                var modifiedInputText = 'отвечай на русском языке: ' + inputText;
+                var modifiedInputText = 'отвечай на русском языке и решите уравнение химической реакции: ' + inputText;
                 chatLog.append('<div class="user-bubble">' + inputText + '</div>'); // Modified this line
                 $('#input_text').val('');
                 chatLog.append('<div class="chat-bubble loader"></div>');
@@ -242,60 +277,73 @@
             }
         });
 
-            function addChatBubble(message) {
-    var bubble = $('<div class="chat-bubble"></div>');
-    var text = $('<span class="bubble-text"></span>');
-    var copyButton = $('<button class="copy-button"></button>');
-    var resumeButton = $('<button class="resume-button">Продолжи</button>');
+          function addChatBubble(message) {
+            var bubble = $('<div class="chat-bubble"></div>');
+            var htmlMessage = $('<div class="html-message"></div>');
+            var copyButton = $('<button class="copy-button"></button>');
+            var resumeButton = $('<button class="resume-button">Продолжить</button>');
 
-    var replacedMessage = message.replace(/YouBot/g, 'MedAI').replace(/You\.com/g, 'MedAI'); // Replace "YouBot" with "MedAI"
 
-    var index = 0;
-    var typingSpeed = 20;
+            var index = 0;
+            var typingSpeed = 20;
 
-    var interval = setInterval(function() {
-        if (index < replacedMessage.length) {
-            var partialMessage = replacedMessage.substring(0, index + 1);
-            text.text(partialMessage);
-            index++;
-        } else {
-            clearInterval(interval);
-            text.text(replacedMessage);
-            bubble.append(copyButton);
-            bubble.append(resumeButton);
+            var interval = setInterval(function() {
+                if (index < message.length) {
+                    var partialMessage = message.substring(0, index + 1);
+                    htmlMessage.html(partialMessage);
+                    index++;
+                } else {
+                    clearInterval(interval);
+                    htmlMessage.html(message);
+                    bubble.append(copyButton);
+                    bubble.append(resumeButton);
+                }
+            }, typingSpeed);
+
+            copyButton.on('click', function() {
+                var textToCopy = htmlMessage.html();
+                copyToClipboard(textToCopy);
+            });
+
+            resumeButton.on('click', function() {
+                var copiedText = htmlMessage.html();
+                $('#input_text').val('Continue where you left: ' + copiedText);
+                $('#chat-form').submit();
+            });
+
+            bubble.append(htmlMessage);
+            chatLog.append(bubble);
         }
-    }, typingSpeed);
 
-    copyButton.on('click', function() {
-        var textToCopy = text.text();
-        copyToClipboard(textToCopy);
+        // Function to copy text to clipboard
+        function copyToClipboard(text) {
+            var tempInput = $('<input>');
+            $('body').append(tempInput);
+            tempInput.val(text).select();
+            document.execCommand('copy');
+            tempInput.remove();
+        }
+
+        // Initial greeting message
+        var initialGreeting = '<ul>' +
+    '<li>Я могу помочь вам в:</li><br>' +
+    '<li>1-Определение химических свойств и характеристик веществ.</li>' +
+    '<li>2-Поддержка в изучении различных химических концепций и тем, таких как стехиометрия, кинетика реакций, электрохимия и т.д.</li>' +
+    '<li>3-Объяснение химических принципов и теорий.</li>' +
+    '<li>4-Помощь в понимании и интерпретации химических экспериментов и данных.</li>' +
+    '<li>5-Обсуждение различных видов химических реакций и их механизмов.</li>' +
+    '<li>6-Обнаружение и объяснение взаимодействий между различными соединениями и элементами.</li>' +
+    '</ul>';
+
+        // Add initial greeting chat bubble when the page is loaded or reloaded
+        addChatBubble(initialGreeting);
     });
-
-    resumeButton.on('click', function() {
-        var copiedText = text.text();
-        $('#input_text').val('продолжить текст: ' + copiedText);
-        $('#chat-form').submit();
-    });
-
-    bubble.append(text);
-    chatLog.append(bubble);
-}
-
-
-            function copyToClipboard(text) {
-                var tempInput = $('<input>');
-                $('body').append(tempInput);
-                tempInput.val(text).select();
-                document.execCommand('copy');
-                tempInput.remove();
-            }
-        });
     </script>
 </head>
 <body>
     <div class="intro-container">
         <h3>Химия 🔬</h3>
-        <br>
+        <p>(Бета Версия 1.4)</p>
         <div class="card-container">
     <!-- Card 1 -->
     <div class="card">

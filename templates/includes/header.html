@@ -4,6 +4,9 @@
         font-size: 20px; /* Adjust the font size as needed */
         font-weight: bold;
     }
+     .nav-item a.nav-link:hover {
+        color: black !important;
+    }
 </style>
 
 <div class="header">
@@ -27,27 +30,31 @@
    <a class="mobile_btn" id="mobile_btn">
       <i class="fas fa-bars"></i>
    </a>
+
    <ul class="nav user-menu">
-      <li class="nav-item">
-         <a class="nav-link" style="color: #365f8a" href="{% url 'home' %}">
-            Общая Медицина
+      <li style="font-size: 16px" class="nav-item">
+         <a class="nav-link" style="color: #0096ff; font-size: 18px" href="{% url 'home' %}">
+            Медицина
          </a>
       </li>
+
       <li class="nav-item">
-         <a class="nav-link" style="color: #365f8a" href="students.html">
-            Тесты
-         </a>
-      </li>
-      <li class="nav-item">
-         <a class="nav-link" style="color: #365f8a" href="{% url 'chem' %}">
+         <a class="nav-link" style="color: #0096ff; font-size: 18px" href="{% url 'chem' %}">
             Химия
          </a>
       </li>
       <li class="nav-item">
-         <a class="nav-link" style="color: #365f8a" href="departments.html">
+         <a class="nav-link" style="color: #0096ff; font-size: 18px" href="{% url 'bio' %}">
             Биология
          </a>
       </li>
+
+         <a class="nav-link" style="color: #0096ff; font-size: 18px" href="https://t.me/medai_assistant_bot">
+            <div style="display: inline-flex; align-items: center; border-radius: 20px; background-color: #0096ff; padding: 10px 12px; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3); cursor: pointer;">
+               <i class="fab fa-telegram" style="font-size: 16px; color: white;"></i>
+               <span style="font-size: 14px; color: white; margin-left: 3px;">Telegram Bot</span>
+            </div>
+         </a>
       <li class="nav-item has-arrow">
          <a href="#" class="dropdown-toggle nav-link" data-toggle="dropdown">
             {% if user.profile_pic == "" %}
