@@ -9,12 +9,12 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('base/', views.BASE, name='base'),
     # Login Path
-    path('', views.LOGIN, name='login'),
+    path('Login', views.LOGIN, name='login'),
     path('doLogin', views.doLogin, name='doLogin'),
     path('doLogout', views.doLogout, name='logout'),
     path('register/', register, name='register'),
     # Main
-    path('Hod/Home', HOD_views.HOME, name='home'),
+    path('', HOD_views.HOME, name='home'),
     path('Hod/Chem', HOD_views.CHEM, name='chem'),
     path('Hod/Bio', HOD_views.BIO, name='bio'),
     path('Hod/Bot', HOD_views.BOT, name='bot'),
