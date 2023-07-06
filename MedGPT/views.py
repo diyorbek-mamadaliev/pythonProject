@@ -39,7 +39,7 @@ def doLogout(request):
     return redirect('login')
 
 
-@login_required(login_url='/')
+
 def PROFILE(request):
     user = CustomUser.objects.get(id=request.user.id)
     context = {

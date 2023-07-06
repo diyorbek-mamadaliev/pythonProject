@@ -1,25 +1,32 @@
 {% load static %}
 <style>
+.header {
+        background-color: #333333;
+    }
+
     .nav-item a.nav-link {
         font-size: 20px; /* Adjust the font size as needed */
         font-weight: bold;
+        color: white; /* Set the text color to white */
     }
-     .nav-item a.nav-link:hover {
-        color: black !important;
+
+    .nav-item a.nav-link:hover {
+        color: white !important;
     }
+
 </style>
 
 <div class="header">
    <div class="header-left">
-      <a href="index.html" class="logo">
-         <img src="{% static 'assets/img/logo.png' %}" alt="Logo">
+      <a style="font-family: 'Space Mono', monospace; color: white; font-size: 30px;" href="#" class="logo">
+         - MedAI Bot
       </a>
-      <a href="index.html" class="logo logo-small">
-         <img src="{% static 'assets/img/logo-small.png' %}" alt="Logo" width="30" height="30">
+      <a href="#" class="logo logo-small">
+         MedAI Bot
       </a>
    </div>
    <div class="top-nav-search mt-3">
-                <h4>
+                <h4 style="color: white;">
                     <strong>
                         Привет,
                     </strong>&nbsp;<span>
@@ -33,54 +40,38 @@
 
    <ul class="nav user-menu">
       <li style="font-size: 16px" class="nav-item">
-         <a class="nav-link" style="color: #0096ff; font-size: 18px" href="{% url 'home' %}">
+         <a class="nav-link" style="color:white; font-size: 18px" href="{% url 'home' %}">
             Медицина
          </a>
       </li>
 
       <li class="nav-item">
-         <a class="nav-link" style="color: #0096ff; font-size: 18px" href="{% url 'chem' %}">
+         <a class="nav-link" style="color: white; font-size: 18px" href="{% url 'chem' %}">
             Химия
          </a>
       </li>
       <li class="nav-item">
-         <a class="nav-link" style="color: #0096ff; font-size: 18px" href="{% url 'bio' %}">
+         <a class="nav-link" style="color: white; font-size: 18px" href="{% url 'bio' %}">
             Биология
          </a>
       </li>
 
-         <a class="nav-link" style="color: #0096ff; font-size: 18px" href="https://t.me/medai_telegram_bot">
+         <a target="_blank" class="nav-link" style="color: #0096ff; font-size: 18px" href="https://t.me/medai_telegram_bot">
             <div style="display: inline-flex; align-items: center; border-radius: 20px; background-color: #0096ff; padding: 10px 12px; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3); cursor: pointer;">
                <i class="fab fa-telegram" style="font-size: 16px; color: white;"></i>
                <span style="font-size: 14px; color: white; margin-left: 3px;">Telegram Bot</span>
             </div>
          </a>
       <li class="nav-item has-arrow">
-         <a href="#" class="dropdown-toggle nav-link" data-toggle="dropdown">
-            {% if user.profile_pic == "" %}
-            <span class="user-img"><img class="rounded-circle" src="{% static 'assets/img/noimg.png' %}" width="31" alt="Profile_Picture"></span>
-            {% else %}
-            <span class="user-img"><img class="rounded-circle" src="/{{ user.profile_pic }}" width="31" alt="Profile_Picture"></span>
-            {% endif %}
-         </a>
-         <div class="dropdown-menu dropdown-menu-right">
-            <div class="user-header">
-               <div class="avatar avatar-sm">
-                  {% if user.profile_pic == "" %}
-                  <span class="user-img"><img class="rounded-circle" src="{% static 'assets/img/noimg.png' %}" width="31" alt="Profile_Picture"></span>
-                  {% else %}
-                  <img src="/{{ user.profile_pic }}" alt="User Image" class="avatar-img rounded-circle">
-                  {% endif %}
-               </div>
-               <div class="user-text">
-                  <h6>{{user.first_name}}</h6>
-                  <p class="text-muted mb-0">Пользователь</p>
-               </div>
-            </div>
-            <a class="dropdown-item" href="{% url 'profile' %}"><i class="fas fa-cog"></i>&nbsp;Настройки Аккаунта</a>
-            <a class="dropdown-item" style="color: red" href="{% url 'logout' %}"><i class="fas fa-sign-out-alt"></i>&nbsp;Выйти из Аккаунта</a>
-         </div>
-      </li>
+   <a href="#" style="color: white; font-size: 18px" class="dropdown-toggle nav-link" data-toggle="dropdown">
+      Выйти
+   </a>
+   <div class="dropdown-menu dropdown-menu-right">
+      <a class="dropdown-item" style="color: red" href="https://medai.uz">
+         <i class="fas fa-sign-out-alt"></i>&nbsp;Выйти
+      </a>
+   </div>
+</li>
    </ul>
 </div>
 

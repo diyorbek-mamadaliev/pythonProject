@@ -12,16 +12,16 @@ API_KEY2 = 'IA2RXD0U0MXL1UDB3PRKSXIQWNIR88QXMM5'
 API_KEY3 = 'ZM53SKKYP209H3IQ3L735PUUN9WEOGPFZ13'
 API_KEY4 = 'ZM53SKKYP209H3IQ3L735PUUN9WEOGPFZ13'
 
-@login_required(login_url='/')
+
 def HOME(request):
     return render(request, 'Hod/home.html')
-@login_required(login_url='/')
+
 def CHEM(request):
     return render(request, 'Hod/chem.html')
-@login_required(login_url='/')
+
 def BIO(request):
     return render(request, 'Hod/bio.html')
-@login_required(login_url='/')
+
 def BOT(request):
     return render(request, 'Hod/bot.html')
 

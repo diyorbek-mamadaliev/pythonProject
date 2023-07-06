@@ -5,6 +5,10 @@
 <head>
     <title>ChatGPT Chat Interface</title>
     <style>
+    body {
+  font-family: Arial, sans-serif;
+  background-color: #FBECE2;
+}
         .copy-button::before {
             content: "\f0ea";
             font-family: "Font Awesome\ 5 Free";
@@ -16,7 +20,7 @@
             position: absolute;
             bottom: 5px;
             right: 5px;
-            background-color: #4CAF50;
+            background-color: #333333;
             color: #fff;
             border: none;
             border-radius: 4px;
@@ -27,14 +31,15 @@
         }
 
         .copy-button:hover {
-            background-color: #45a049;
+            background-color: white;
+            color: #333333;
         }
 
         .resume-button {
             position: absolute;
             bottom: 5px;
             right: 35px;
-            background-color: #365f8a;
+            background-color: #333333;
             color: #fff;
             border: none;
             border-radius: 4px;
@@ -45,7 +50,8 @@
         }
 
         .resume-button:hover {
-            background-color: #3071a9;
+            background-color: white;
+            color: #333333;
         }
 
         body {
@@ -56,9 +62,9 @@
             width: 100%;
             height: 620px;
             margin: 0 auto;
-            background-color: #f8f9fa;
-            border: 1px solid #ccc;
+            border: 1px solid #333333;
             border-radius: 10px;
+            background-color: #FBECE2;
             padding: 20px;
             display: flex;
             flex-direction: column;
@@ -83,12 +89,12 @@
 }
 
         .chat-log::-webkit-scrollbar-thumb {
-        background-color: #365f8a;
+        background-color: #333333;
 }
 
 
         .chat-bubble {
-            background-color: #f2f2f2;
+            background-color: white;
             color: #333;
             border-radius: 10px;
             padding: 40px;
@@ -100,8 +106,8 @@
         }
 
         .user-bubble {
-            background-color: #c2e0ff;
-            color: #333;
+            background-color: #333333;
+            color: white;
             border-radius: 10px;
             padding: 10px;
             margin-bottom: 10px;
@@ -117,7 +123,7 @@
         .chat-input {
             flex-grow: 1;
             padding: 10px;
-            border: 2px solid #ccc;
+            border: 2px solid #333333;
             border-radius: 10px;
             outline: none;
             font-size: 16px;
@@ -127,7 +133,7 @@
         .chat-button {
             margin-left: 10px;
             padding: 5px 10px;
-            background-color: #365f8a;
+            background-color: #333333;
             color: #fff;
             border: none;
             border-radius: 10px;
@@ -212,13 +218,13 @@
       flex-basis: calc(20% - 10px);
       padding: 0px;
       border-radius: 10px;
-      background-color: #f8f9fa;
       background-color: white;
+      border: #333333;
     }
 
     .card-title {
       font-weight: bold;
-      color: grey;
+      color: #333333;
       font-size: 14px;
       margin-bottom: 0px;
     }

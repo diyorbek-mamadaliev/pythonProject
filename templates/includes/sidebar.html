@@ -1,13 +1,31 @@
 {% load static %}
 <style>
+
+.space {
+        display: inline-block;
+        width: 10px; /* Adjust the width as per your desired spacing */
+    }
+
+    .sidebar {
+        background-color: #333333;
+    }
+
+    .submenu a {
+        color: white;
+    }
+
+    .submenu ul li a {
+        color: white;
+    }
    .space {
   display: inline-block;
   width: 10px; /* Adjust the width as per your desired spacing */
 }
 .submenu {
-        border: 1px solid #ccc;
+        border: 1px solid grey;
         border-radius: 10px;
         transition: transform 0.3s ease;
+        color: white;
     }
 
 
@@ -17,10 +35,10 @@
                <div id="sidebar-menu" class="sidebar-menu">
                   <ul>
                      <li class="menu-title">
-                        <h3 style="color: #333333; font-size: 18px">Шаблоны для поиска на тему:</h3>
+                        <h3 style="color: white; font-size: 18px">Шаблоны для поиска на тему:</h3>
                      </li>
                      <li class="submenu">
-    <a style="color: grey" href="#">Медицинские Термины<span class="space"></span><span class="menu-arrow"></span></a>
+    <a style="color: white" href="#">Медицинские Термины<span class="space"></span><span class="menu-arrow"></span></a>
     <ul>
         <li>
             <a>
@@ -39,7 +57,7 @@
     </ul>
 </li>
 <li class="submenu">
-    <a style="color: grey" href="#">Составить Тесты<span class="space"></span><span class="menu-arrow"></span></a>
+    <a style="color: white" href="#">Составить Тесты<span class="space"></span><span class="menu-arrow"></span></a>
     <ul>
         <li>
             <a>
@@ -53,7 +71,7 @@
     </ul>
 </li>
                       <li class="submenu">
-    <a style="color: grey" href="#">Карточки для Подготовки<span class="space"></span><span class="menu-arrow"></span></a>
+    <a style="color: white" href="#">Карточки для Подготовки<span class="space"></span><span class="menu-arrow"></span></a>
     <ul>
         <li>
             <a>
@@ -67,7 +85,7 @@
     </ul>
 </li>
 <li class="submenu">
-    <a style="color: grey" href="#">Ресурсы и Книги<span class="space"></span><span class="menu-arrow"></span></a>
+    <a style="color: white" href="#">Ресурсы и Книги<span class="space"></span><span class="menu-arrow"></span></a>
     <ul>
         <li>
             <a>
@@ -86,7 +104,7 @@
     </ul>
 </li>
 <li class="submenu">
-    <a style="color: grey" href="#">Шаблоны для исследований<span class="space"></span><span class="menu-arrow"></span></a>
+    <a style="color: white" href="#">Шаблоны для исследований<span class="space"></span><span class="menu-arrow"></span></a>
     <ul>
         <li>
             <a>
@@ -105,7 +123,7 @@
     </ul>
 </li>
 <li class="submenu">
-    <a style="color: grey" href="#">Создание Презентации<span class="space"></span><span class="menu-arrow"></span></a>
+    <a style="color: white" href="#">Создание Презентации<span class="space"></span><span class="menu-arrow"></span></a>
     <ul>
         <li>
             <a>
@@ -124,7 +142,7 @@
     </ul>
 </li>
                       <li class="submenu">
-    <a style="color: grey" href="#">Периодическая Таблица Менделеева<span class="space"></span><span class="menu-arrow"></span></a>
+    <a style="color: white" href="#">Периодическая Таблица Менделеева<span class="space"></span><span class="menu-arrow"></span></a>
     <ul>
         <li>
             <a>
@@ -143,7 +161,7 @@
     </ul>
 </li>
 <li class="submenu">
-    <a style="color: grey" href="#">Химические Свойства и Задачи<span class="space"></span><span class="menu-arrow"></span></a>
+    <a style="color: white" href="#">Химические Свойства и Задачи<span class="space"></span><span class="menu-arrow"></span></a>
     <ul>
         <li>
             <a>
@@ -164,7 +182,7 @@
 
 
 <li class="submenu">
-    <a style="color: grey" href="#">Стехиометрии и Расчёт Молей<span class="space"></span><span class="menu-arrow"></span></a>
+    <a style="color: white" href="#">Стехиометрии и Расчёт Молей<span class="space"></span><span class="menu-arrow"></span></a>
     <ul>
         <li>
             <a>
@@ -180,7 +198,7 @@
 </li>
 
 <li class="submenu">
-    <a style="color: grey" href="#">Анатомия и Физиология<span class="space"></span><span class="menu-arrow"></span></a>
+    <a style="color: white" href="#">Анатомия и Физиология<span class="space"></span><span class="menu-arrow"></span></a>
     <ul>
         <li>
             <a>
@@ -200,7 +218,7 @@
 </li>
 
 <li class="submenu">
-    <a style="color: grey" href="#">Клеточная и Молекулярная Биология<span class="space"></span><span class="menu-arrow"></span></a>
+    <a style="color: white" href="#">Клеточная и Молекулярная Биология<span class="space"></span><span class="menu-arrow"></span></a>
     <ul>
         <li>
             <a>
@@ -222,7 +240,7 @@
 
 
 <li class="submenu">
-    <a style="color: grey" href="#">Генетика<span class="space"></span><span class="menu-arrow"></span></a>
+    <a style="color: white" href="#">Генетика<span class="space"></span><span class="menu-arrow"></span></a>
     <ul>
         <li>
             <a>
@@ -240,7 +258,7 @@
 </li>
 
 <li class="submenu">
-    <a style="color: grey" href="#">Поддерживает ли помощник Вычислительную химию и моделирование?<span class="space"></span><span class="menu-arrow"></span></a>
+    <a style="color: white" href="#">Поддерживает ли помощник Вычислительную химию и моделирование?<span class="space"></span><span class="menu-arrow"></span></a>
     <ul>
         <li>
             <a>

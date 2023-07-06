@@ -1359,7 +1359,6 @@ div.dataTables_wrapper div.dataTables_info {
     width: 320px;
     z-index: 1;
     transition: all 0.2s ease-in-out;
-    background-color: #f7f7fa;
     border-bottom: 1px solid #efefef;
 	border-right: 1px solid #ececf5;
     display: flex;
