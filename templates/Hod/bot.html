@@ -33,7 +33,7 @@
         .resume-button {
             position: absolute;
             bottom: 5px;
-            right: 35px;
+            right: 98px;
             background-color: #333333;
             color: #fff;
             border: none;
@@ -268,6 +268,14 @@
             font-size: 16px;
             transition: border-color 0.3s ease;
         }
+        .fixed-footer {
+            position: fixed;
+            bottom: 23;
+            left: 0;
+            width: 100%;
+            z-index: 999;
+            background-color: #fff;
+        }
 
         .chat-button {
             margin-left: 10px;
@@ -326,7 +334,7 @@
           function addChatBubble(message) {
             var bubble = $('<div class="chat-bubble"></div>');
             var htmlMessage = $('<div class="html-message"></div>');
-            var copyButton = $('<button class="copy-button"></button>');
+            var copyButton = $('<button class="copy-button">Копировать</button>');
             var resumeButton = $('<button class="resume-button">Продолжить</button>');
 
             var index = 0;
@@ -379,6 +387,33 @@
 
         // Add initial greeting chat bubble when the page is loaded or reloaded
         addChatBubble(initialGreeting);
+
+        function scrollToBottom() {
+                chatLog.scrollTop(chatLog[0].scrollHeight);
+            }
+
+            // Scroll to the bottom when the chat log height changes
+            chatLog.on('DOMSubtreeModified', function() {
+                scrollToBottom();
+            });
+
+            // Lift the input field when the keyboard appears
+            window.addEventListener('resize', function() {
+                var chatContainer = $('.chat-container');
+                var windowHeight = window.innerHeight;
+                var containerOffset = chatContainer.offset().top;
+                var containerHeight = chatContainer.outerHeight();
+                var inputContainerHeight = $('.chat-input-container').outerHeight();
+
+                if (windowHeight < containerOffset + containerHeight + inputContainerHeight) {
+                    chatContainer.addClass('fixed-footer');
+                } else {
+                    chatContainer.removeClass('fixed-footer');
+                }
+            });
+
+            // Initial scroll to the bottom
+            scrollToBottom();
     });
     </script>
 </head>
