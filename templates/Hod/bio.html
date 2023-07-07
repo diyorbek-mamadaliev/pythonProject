@@ -284,41 +284,43 @@
         });
 
           function addChatBubble(message) {
-            var bubble = $('<div class="chat-bubble"></div>');
-            var htmlMessage = $('<div class="html-message"></div>');
-            var copyButton = $('<button class="copy-button"></button>');
-            var resumeButton = $('<button class="resume-button">Продолжить</button>');
+    var bubble = $('<div class="chat-bubble"></div>');
+    var htmlMessage = $('<div class="html-message"></div>');
+    var copyButton = $('<button class="copy-button"></button>');
+    var resumeButton = $('<button class="resume-button">Продолжить</button>');
 
-            var index = 0;
-            var typingSpeed = 20;
+    var index = 0;
+    var typingSpeed = 20;
 
-            var interval = setInterval(function() {
-                if (index < message.length) {
-                    var partialMessage = message.substring(0, index + 1);
-                    htmlMessage.html(partialMessage);
-                    index++;
-                } else {
-                    clearInterval(interval);
-                    htmlMessage.html(message);
-                    bubble.append(copyButton);
-                    bubble.append(resumeButton);
-                }
-            }, typingSpeed);
+    var modifiedMessage = message.replace(/YouBot/g, 'MedAI Bot').replace(/You\.com/g, 'MedAI Bot');
 
-            copyButton.on('click', function() {
-                var textToCopy = htmlMessage.html();
-                copyToClipboard(textToCopy);
-            });
-
-            resumeButton.on('click', function() {
-                var copiedText = htmlMessage.html();
-                $('#input_text').val('Закончи генерацию: ' + copiedText);
-                $('#chat-form').submit();
-            });
-
-            bubble.append(htmlMessage);
-            chatLog.append(bubble);
+    var interval = setInterval(function() {
+        if (index < modifiedMessage.length) {
+            var partialMessage = modifiedMessage.substring(0, index + 1);
+            htmlMessage.html(partialMessage);
+            index++;
+        } else {
+            clearInterval(interval);
+            htmlMessage.html(modifiedMessage);
+            bubble.append(copyButton);
+            bubble.append(resumeButton);
         }
+    }, typingSpeed);
+
+    copyButton.on('click', function() {
+        var textToCopy = htmlMessage.html();
+        copyToClipboard(textToCopy);
+    });
+
+    resumeButton.on('click', function() {
+        var copiedText = htmlMessage.html();
+        $('#input_text').val('Закончи генерацию: ' + copiedText);
+        $('#chat-form').submit();
+    });
+
+    bubble.append(htmlMessage);
+    chatLog.append(bubble);
+}
 
         // Function to copy text to clipboard
         function copyToClipboard(text) {
