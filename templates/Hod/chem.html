@@ -4,8 +4,127 @@
 <br>
 <head>
     <title>MedAI Chat Interface</title>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+
+        $(document).ready(function() {
+    var chatLog = $('#chat-log');
+
+    $('#chat-form').on('submit', function(event) {
+        event.preventDefault();
+
+        var inputText = $('#input_text').val().trim();
+        if (inputText !== '') {
+            var modifiedInputText = 'отвечай на русском языке: ' + inputText;
+            chatLog.append('<div class="user-bubble">' + inputText + '</div>');
+            $('#input_text').val('');
+            chatLog.append('<div class="chat-bubble loader"></div>');
+
+            $.ajax({
+                type: 'POST',
+                url: '{% url "hod_chat" %}',
+                data: {
+                    'input_text': modifiedInputText,
+                    'csrfmiddlewaretoken': '{{ csrf_token }}'
+                },
+                success: function(response) {
+                    var generatedTextObj = JSON.parse(response.generated_text);  // Parse the JSON string into an object
+                    var generatedText = generatedTextObj.response;  // Access the 'response' property of the generated text object
+                    addChatBubble(generatedText);
+                },
+                error: function(xhr) {
+                    console.log(xhr.responseText);
+                }
+            });
+        }
+    });
+
+    function addChatBubble(message) {
+        var bubble = $('<div class="chat-bubble"></div>');
+        var htmlMessage = $('<div class="html-message"></div>');
+        var copyButton = $('<button class="copy-button">Копировать</button>');
+        var resumeButton = $('<button class="resume-button">Продолжить</button>');
+
+        var index = 0;
+        var typingSpeed = 20;
+
+        var modifiedMessage = message.replace(/искусственный интеллект/g, 'MedAI Bot').replace(/You\.com/g, 'MedAI Bot');
+
+        var interval = setInterval(function() {
+            if (index < modifiedMessage.length) {
+                var partialMessage = modifiedMessage.substring(0, index + 1);
+                htmlMessage.html(partialMessage);
+                index++;
+            } else {
+                clearInterval(interval);
+                bubble.append(copyButton);
+                bubble.append(resumeButton);
+            }
+        }, typingSpeed);
+
+        copyButton.on('click', function() {
+            var textToCopy = htmlMessage.text();
+            copyToClipboard(textToCopy);
+        });
+
+        resumeButton.on('click', function() {
+            var copiedText = htmlMessage.html();
+            $('#input_text').val('Continue where you left: ' + copiedText);
+            $('#chat-form').submit();
+        });
+
+        bubble.append(htmlMessage);
+        chatLog.children('.loader').remove();
+        chatLog.append(bubble);
+    }
+
+    function copyToClipboard(text) {
+        var tempInput = $('<input>');
+        $('body').append(tempInput);
+        tempInput.val(text).select();
+        document.execCommand('copy');
+        tempInput.remove();
+    }
+
+    // Initial greeting message
+    var initialGreeting = '<ul>' +
+'<li>Я могу помочь вам в:</li><br>' +
+'<li>1-Определение химических свойств и характеристик веществ.</li>' +
+'<li>2-Поддержка в изучении различных химических концепций и тем, таких как стехиометрия, кинетика реакций, электрохимия и т.д.</li>' +
+'<li>3-Объяснение химических принципов и теорий.</li>' +
+'<li>4-Помощь в понимании и интерпретации химических экспериментов и данных.</li>' +
+'<li>5-Обсуждение различных видов химических реакций и их механизмов.</li>' +
+'<li>6-Обнаружение и объяснение взаимодействий между различными соединениями и элементами.</li>' +
+'</ul>';
+
+
+    // Add initial greeting chat bubble when the page is loaded or reloaded
+    addChatBubble(initialGreeting);
+});
+
+
+    </script>
     <style>
-    body {
+    .bot-bubble {
+  background-color: white;
+  border-radius: 15px;
+  padding: 10px;
+  margin-bottom: 10px;
+  max-width: 70%;
+  word-wrap: break-word;
+}
+
+.bot-bubble::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: -10px;
+  border-style: solid;
+  border-width: 10px 10px 0 0;
+  border-color: #e6e6e6 transparent transparent transparent;
+}
+        body {
   font-family: Arial, sans-serif;
   background-color: #FBECE2;
 }
@@ -25,7 +144,7 @@
             border: none;
             border-radius: 4px;
             cursor: pointer;
-            padding: 2px 5px;  /* Adjusted padding */
+            padding: 2px 8px;  /* Adjusted padding */
             transition: background-color 0.3s ease;
             font-size: 16px;  /* Adjusted font size */
         }
@@ -38,7 +157,7 @@
         .resume-button {
             position: absolute;
             bottom: 5px;
-            right: 35px;
+            right: 130px;
             background-color: #333333;
             color: #fff;
             border: none;
@@ -247,155 +366,51 @@
 }
 
     </style>
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-
-    <script>
-        $(document).ready(function() {
-        var chatLog = $('#chat-log');
-
-        $('#chat-form').on('submit', function(event) {
-            event.preventDefault();
-
-            var inputText = $('#input_text').val().trim();
-            if (inputText !== '') {
-                var modifiedInputText = 'отвечай на русском языке и решите уравнение химической реакции: ' + inputText;
-                chatLog.append('<div class="user-bubble">' + inputText + '</div>'); // Modified this line
-                $('#input_text').val('');
-                chatLog.append('<div class="chat-bubble loader"></div>');
-
-                $.ajax({
-                    type: 'POST',
-                    url: '{% url "hod_chat" %}',
-                    data: {
-                        'input_text': modifiedInputText,
-                        'csrfmiddlewaretoken': '{{ csrf_token }}'
-                    },
-                    success: function(response) {
-                        var generatedText = response.generated_text;
-                        chatLog.children().last().remove();
-                        addChatBubble(generatedText);
-                        chatLog.scrollTop(chatLog[0].scrollHeight);
-                    },
-                    error: function(xhr) {
-                        console.log(xhr.responseText);
-                    }
-                });
-            }
-        });
-
-          function addChatBubble(message) {
-    var bubble = $('<div class="chat-bubble"></div>');
-    var htmlMessage = $('<div class="html-message"></div>');
-    var copyButton = $('<button class="copy-button"></button>');
-    var resumeButton = $('<button class="resume-button">Продолжить</button>');
-
-    var index = 0;
-    var typingSpeed = 20;
-
-    var modifiedMessage = message.replace(/YouBot/g, 'MedAI Bot').replace(/You\.com/g, 'MedAI Bot');
-
-    var interval = setInterval(function() {
-        if (index < modifiedMessage.length) {
-            var partialMessage = modifiedMessage.substring(0, index + 1);
-            htmlMessage.html(partialMessage);
-            index++;
-        } else {
-            clearInterval(interval);
-            htmlMessage.html(modifiedMessage);
-            bubble.append(copyButton);
-            bubble.append(resumeButton);
-        }
-    }, typingSpeed);
-
-    copyButton.on('click', function() {
-        var textToCopy = htmlMessage.html();
-        copyToClipboard(textToCopy);
-    });
-
-    resumeButton.on('click', function() {
-        var copiedText = htmlMessage.html();
-        $('#input_text').val('Закончи генерацию: ' + copiedText);
-        $('#chat-form').submit();
-    });
-
-    bubble.append(htmlMessage);
-    chatLog.append(bubble);
-}
-
-        // Function to copy text to clipboard
-        function copyToClipboard(text) {
-            var tempInput = $('<input>');
-            $('body').append(tempInput);
-            tempInput.val(text).select();
-            document.execCommand('copy');
-            tempInput.remove();
-        }
-
-        // Initial greeting message
-        var initialGreeting = '<ul>' +
-    '<li>Я могу помочь вам в:</li><br>' +
-    '<li>1-Определение химических свойств и характеристик веществ.</li>' +
-    '<li>2-Поддержка в изучении различных химических концепций и тем, таких как стехиометрия, кинетика реакций, электрохимия и т.д.</li>' +
-    '<li>3-Объяснение химических принципов и теорий.</li>' +
-    '<li>4-Помощь в понимании и интерпретации химических экспериментов и данных.</li>' +
-    '<li>5-Обсуждение различных видов химических реакций и их механизмов.</li>' +
-    '<li>6-Обнаружение и объяснение взаимодействий между различными соединениями и элементами.</li>' +
-    '</ul>';
-
-        // Add initial greeting chat bubble when the page is loaded or reloaded
-        addChatBubble(initialGreeting);
-    });
-    </script>
 </head>
 <body>
     <div class="intro-container">
-        <h3>Химия 🔬</h3>
-        <p>(Бета Версия 1.4)</p>
+        <h3>Общая Медицина 💊</h3>
+        <p>(Стабильная Версия 1.4)</p>
+
         <div class="card-container">
-    <!-- Card 1 -->
-    <div class="card">
-        <div class="card-body">
-            <h3 class="card-title">Периодическая таблица и информация об элементах</h3>
+            <div class="card">
+                <div class="card-body">
+                    <h3 class="card-title">Медицинский глоссарий</h3>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-body">
+                    <h3 class="card-title">Подготовка к экзаменам</h3>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-body">
+                    <h3 class="card-title">Поиск книг и материалов</h3>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-body">
+                    <h3 class="card-title">Поддержка исследований</h3>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-body">
+                    <h3 class="card-title">Анализ данных</h3>
+                </div>
+            </div>
         </div>
-    </div>
 
-    <!-- Card 2 -->
-    <div class="card">
-        <div class="card-body">
-            <h3 class="card-title">Химические реакции и уравнения</h3>
+        <div class="chat-container">
+            <div id="chat-log" class="chat-log"></div>
+            <form id="chat-form" class="chat-input-container">
+                <input type="text" id="input_text" class="chat-input" placeholder="Напишите свой вопрос..." required>
+                <button type="submit" class="chat-button">Отправить</button>
+            </form>
         </div>
-    </div>
-
-
-    <!-- Card 4 -->
-    <div class="card">
-        <div class="card-body">
-            <h3 class="card-title">Стехиометрия и расчет молей</h3>
-        </div>
-    </div>
-
-    <!-- Card 5 -->
-    <div class="card">
-        <div class="card-body">
-            <h3 class="card-title">Лабораторные пособия и руководства</h3>
-        </div>
-    </div>
-
-    <!-- Card 6 -->
-    <div class="card">
-        <div class="card-body">
-            <h3 class="card-title">Вычислительная химия и моделирование</h3>
-        </div>
-    </div>
-</div>
-
-    <div class="chat-container">
-        <div id="chat-log" class="chat-log"></div>
-        <form id="chat-form" class="chat-input-container">
-            <input type="text" id="input_text" class="chat-input" placeholder="Напишите свой вопрос..." required>
-            <button type="submit" class="chat-button">Отправить</button>
-        </form>
-    </div>
     </div>
 </body>
 </html>
