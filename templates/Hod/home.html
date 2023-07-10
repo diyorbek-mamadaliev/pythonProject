@@ -16,7 +16,7 @@
 
         var inputText = $('#input_text').val().trim();
         if (inputText !== '') {
-            var modifiedInputText = 'отвечай на русском языке: ' + inputText;
+            var modifiedInputText = '' + inputText;
             chatLog.append('<div class="user-bubble">' + inputText + '</div>');
             $('#input_text').val('');
             chatLog.append('<div class="chat-bubble loader"></div>');
@@ -403,7 +403,7 @@
         <div class="chat-container">
             <div id="chat-log" class="chat-log"></div>
             <form id="chat-form" class="chat-input-container">
-                <input type="text" id="input_text" class="chat-input" placeholder="Напишите свой вопрос..." required>
+                <input type="text" id="input_text" class="chat-input" placeholder="Объясни - / Реши задачу..." required>
                 <button type="submit" class="chat-button">Отправить</button>
             </form>
         </div>
