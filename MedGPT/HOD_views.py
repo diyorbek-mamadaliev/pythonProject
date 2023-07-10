@@ -34,7 +34,8 @@ def hod_chat(request):
         input_text = request.POST.get('input_text', '')  # Get the input text from the AJAX request
 
         url = "https://chatgpt-api7.p.rapidapi.com/ask"  # Set API URL
-        payload = {"query": input_text}
+        payload = {"query": input_text,
+                   "wordLimit": "1024"}
         headers = {
             "Content-Type": "application/json",
             "X-RapidAPI-Key": "eba8330802mshbce627085fbb152p1609f5jsnc3bcb8954510",
