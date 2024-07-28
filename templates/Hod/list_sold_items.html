@@ -1,0 +1,63 @@
+<style>
+
+    .card {
+    border-radius: 15px;
+    transition: transform 0.3s ease-in-out;
+    overflow: hidden;
+    background-color: #333; /* Light black background */
+    color: white; /* White text */
+}
+
+
+</style>
+
+{% extends 'base.html' %}
+{% block content %}
+<div class="content container-fluid">
+    <div class="page-header">
+        <div class="row align-items-center">
+            <div class="col">
+                <h3 class="page-title"><i class="fas fa-dolly"></i> Bugun Sotilgan Maxsulotlar</h3>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="card card-table">
+                <div class="card-body">
+                    <div class="table-responsive table-hover">
+                        <table class="data-table table" style="table-layout: ;">
+                            <thead class="thead-light">
+                                <tr>
+                                    <th style="color: black;">Maxsulot</th>
+                                    <th style="color: black;">Tarif</th>
+                                    <th style="color: black;">Narxi</th>
+                                    <th style="color: black;">T'olov Turi</th>
+                                    <th style="color: black;">Sotilgan Soni</th>
+                                    <th style="color: black;">Mijoz Xaqida Ma'lumot</th>
+                                    <th style="color: black;">Sotilgan Sana</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for item in sold_items %}
+                                <tr>
+                                    <td style="font-size: 16px; font-weight: bold;">
+                                        {{ item.product.name }}
+                                    </td>
+                                    <td style="color: lightslategray; font-size: 16px">{{ item.product.description }}</td>
+                                    <td style="color: lightslategray; font-size: 16px">{{ item.product.price }}</td>
+                                    <td style="color: lightslategray; font-size: 16px">{{ item.get_payment_type_display }}</td>
+                                    <td style="color: lightslategray; font-size: 16px">{{ item.quantity_sold }}</td>
+                                    <td style="color: lightslategray; font-size: 16px">{{ item.comment }}</td>
+                                    <td style="color: lightslategray; font-size: 16px">{{ item.sold_at }}</td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

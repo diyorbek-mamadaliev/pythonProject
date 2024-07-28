@@ -1,0 +1,57 @@
+<!-- templates/Hod/today_sales_report.html -->
+{% extends 'base.html' %}
+{% block content %}
+<div class="content container-fluid">
+    <div class="page-header">
+        <div class="row align-items-center">
+            <div class="col">
+                <h3 class="page-title"><i class="fas fa-dolly"></i> Bugun Sotilgan Maxsulotlar</h3>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="card card-table">
+                <div class="card-body">
+                    <div class="table-responsive table-hover">
+                        <table class="table" style="table-layout: ;">
+                            <thead class="thead-light">
+                                <tr>
+                                    <th style="color: black;">Maxsulot</th>
+                                    <th style="color: black;">Tarif</th>
+                                    <th style="color: black;">Narxi</th>
+                                    <th style="color: black;">To'lov Turi</th>
+                                    <th style="color: black;">Sotilgan Soni</th>
+                                    <th style="color: black;">Mijoz Xaqida Ma'lumot</th>
+                                    <th style="color: black;">Sotilgan Sana</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for item in sold_items %}
+                                <tr>
+                                    <td style="font-size: 16px; font-weight: bold;">
+                                        {{ item.product.name }}
+                                    </td>
+                                    <td style="color: lightslategray; font-size: 16px">{{ item.product.description }}</td>
+                                    <td style="color: lightslategray; font-size: 16px">{{ item.product.price }}</td>
+                                    <td style="color: lightslategray; font-size: 16px">{{ item.get_payment_type_display }}</td>
+                                    <td style="color: lightslategray; font-size: 16px">{{ item.quantity_sold }}</td>
+                                    <td style="color: lightslategray; font-size: 16px">{{ item.comment }}</td>
+                                    <td style="color: lightslategray; font-size: 16px">{{ item.sold_at }}</td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                            <tfoot>
+                                <tr>
+                                    <th colspan="2">Jami Daromad:</th>
+                                    <th colspan="5" style="text-align: right;">{{ total_price }} SUM</th>
+                                </tr>
+                            </tfoot>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

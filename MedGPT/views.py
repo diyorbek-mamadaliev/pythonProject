@@ -22,11 +22,11 @@ def doLogin(request):
             login(request, user)
             user_type = user.user_type
             if user_type == '1':
-                return redirect('home')
+                return redirect('product_list')
             elif user_type == '2':
-                return HttpResponse('Staff Panel')
+                return HttpResponse('product_list')
             elif user_type == '3':
-                return HttpResponse('Student Panel')
+                return HttpResponse('product_list')
             else:
                 messages.error(request, 'Повторите Пароль или Эл.Почту')
                 return redirect('login')

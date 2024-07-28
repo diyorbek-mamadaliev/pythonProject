@@ -1,0 +1,56 @@
+<style>
+    <style>
+    .table th, .table td {
+        vertical-align: middle;
+        text-align: center;
+    }
+    .table th {
+        background-color: #f8f9fa;
+    }
+</style>
+
+</style>
+
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container mt-5">
+    <div class="card">
+        <div class="card-header">
+            <h3>Qarzdorlikni Uzish</h3>
+        </div>
+        <div class="card-body">
+            <form method="POST">
+                {% csrf_token %}
+                <table class="table table-bordered">
+                    <tbody>
+                        <tr>
+                            <th>Maxsulot:</th>
+                            <td>{{ sold_item.product.name }}</td>
+                        </tr>
+                        <tr>
+                            <th>Sotilgan Soni:</th>
+                            <td>{{ sold_item.quantity_sold }}</td>
+                        </tr>
+                        <tr>
+                            <th>Izoh:</th>
+                            <td>{{ sold_item.comment }}</td>
+                        </tr>
+                        <tr>
+                            <th>Sotilgan Sana:</th>
+                            <td>{{ sold_item.sold_at }}</td>
+                        </tr>
+                        <tr>
+                            <th>{{ form.payment_type.label }}</th>
+                            <td>{{ form.payment_type }}</td>
+                        </tr>
+                    </tbody>
+                </table>
+                <br>
+                <button type="submit" class="btn btn-primary">Tasdiqlash</button>
+                <a href="{% url 'nasiya_sold_items' %}" class="btn btn-secondary ml-2">Ortga Qaytish</a>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

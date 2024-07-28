@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h1>{% if product %}Edit{% else %}Add{% endif %} Product</h1>
+<form method="POST">
+    {% csrf_token %}
+    <div class="form-group">
+        <label for="name">Name:</label>
+        <input type="text" class="form-control" id="name" name="name" value="{{ product.name|default:'' }}">
+    </div>
+    <div class="form-group">
+        <label for="description">Description:</label>
+        <textarea class="form-control" id="description" name="description">{{ product.description|default:'' }}</textarea>
+    </div>
+    <div class="form-group">
+        <label for="quantity">Quantity:</label>
+        <input type="number" class="form-control" id="quantity" name="quantity" value="{{ product.quantity|default:'' }}">
+    </div>
+    <div class="form-group">
+        <label for="price">Price:</label>
+        <input type="number" class="form-control" id="price" name="price" value="{{ product.price|default:'' }}" step="0.01">
+    </div>
+    <button type="submit" class="btn btn-primary">Save</button>
+</form>
+<a href="{% url 'product_list' %}" class="btn btn-secondary">Back to List</a>
+{% endblock %}

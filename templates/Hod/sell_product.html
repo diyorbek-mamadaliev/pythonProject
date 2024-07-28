@@ -1,0 +1,92 @@
+<!-- templates/sell_product.html -->
+<style>
+    .container {
+        max-width: 600px;
+    }
+
+    .card {
+        border-radius: 10px;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    }
+
+    .card-header {
+        background-color: #f8f9fa;
+        border-bottom: 1px solid #dee2e6;
+    }
+
+    .card-body {
+        padding: 20px;
+    }
+
+    .btn-primary {
+        background-color: #007bff;
+        border-color: #007bff;
+    }
+
+    .btn-secondary {
+        background-color: #6c757d;
+        border-color: #6c757d;
+    }
+
+    .table th, .table td {
+        vertical-align: middle;
+        text-align: center;
+    }
+
+    .table th {
+        background-color: #f8f9fa;
+    }
+
+    .product-image {
+        width: 150px;
+        height: 150px;
+        object-fit: cover;
+        border-radius: 8px;
+    }
+</style>
+
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container mt-5">
+    <div class="card">
+        <div class="card-header">
+            <h3>{{ product.name }}ni sotib yuborish</h3>
+        </div>
+        <div class="card-body">
+            <form method="POST">
+                {% csrf_token %}
+                <table class="table table-bordered">
+                    <tbody>
+                        <tr>
+                            <th>Rasm:</th>
+                            <td>
+                                {% if product.image %}
+                                    <img src="{{ product.image.url }}" alt="{{ product.name }}" class="product-image">
+                                {% else %}
+                                    Rasm Yo'q
+                                {% endif %}
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>Sotilgan Soni:</th>
+                            <td>{{ form.quantity_sold }}</td>
+                        </tr>
+                        <tr>
+                            <th>Izoh:</th>
+                            <td>{{ form.comment }}</td>
+                        </tr>
+                        <tr>
+                            <th>To'lov turi:</th>
+                            <td>{{ form.payment_type }}</td>
+                        </tr>
+                    </tbody>
+                </table>
+                <br>
+                <button type="submit" class="btn btn-primary" {% if product.quantity == 0 %}disabled{% endif %}>Sotish</button>
+                <a href="{% url 'product_list' %}" class="btn btn-secondary ml-2">Bekor Qilish</a>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,93 @@
+<!-- templates/product_detail.html -->
+<style>
+    .container {
+        max-width: 600px;
+    }
+
+    .card {
+        border-radius: 10px;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    }
+
+    .card-header {
+        background-color: #f8f9fa;
+        border-bottom: 1px solid #dee2e6;
+        padding: 15px;
+    }
+
+    .card-body {
+        padding: 20px;
+    }
+
+    .btn-primary {
+        background-color: #007bff;
+        border-color: #007bff;
+    }
+
+    .btn-secondary {
+        background-color: #6c757d;
+        border-color: #6c757d;
+    }
+
+    .table th, .table td {
+        vertical-align: middle;
+        text-align: center;
+    }
+
+    .table th {
+        background-color: #f8f9fa;
+    }
+
+    .product-image {
+        width: 150px;
+        height: 150px;
+        object-fit: cover;
+        border-radius: 8px;
+    }
+</style>
+
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container mt-5">
+    <div class="card">
+        <div class="card-header">
+            <h3>Maxsulot Tafsilotlari</h3>
+        </div>
+        <div class="card-body">
+            <table class="table table-bordered">
+                <tbody>
+                    <tr>
+                        <th>Rasm:</th>
+                        <td>
+                            {% if product.image %}
+                                <img src="{{ product.image.url }}" alt="{{ product.name }}" class="product-image">
+                            {% else %}
+                                No Image
+                            {% endif %}
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>Maxsulot:</th>
+                        <td>{{ product.name }}</td>
+                    </tr>
+                    <tr>
+                        <th>Tarif:</th>
+                        <td>{{ product.description }}</td>
+                    </tr>
+                    <tr>
+                        <th>Narxi:</th>
+                        <td>{{ product.price }}</td>
+                    </tr>
+                    <tr>
+                        <th>Qolgan Soni:</th>
+                        <td>{{ product.quantity }}</td>
+                    </tr>
+                </tbody>
+            </table>
+            <br>
+            <a href="{% url 'product_list' %}" class="btn btn-secondary ml-2">Ortga Qaytish</a>
+        </div>
+    </div>
+</div>
+{% endblock %}

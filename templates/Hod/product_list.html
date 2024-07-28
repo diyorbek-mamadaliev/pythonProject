@@ -1,0 +1,104 @@
+<style>
+    .card {
+        border-radius: 15px;
+        transition: transform 0.3s ease-in-out;
+        overflow: hidden;
+        color: white;
+    }
+
+    .sm-box:hover {
+        transform: scale(1.05);
+    }
+
+    .card .card-img-top {
+        width: 100%;
+        height: 200px; /* Adjust height as needed */
+        object-fit: cover;
+        border-bottom: 1px solid #dee2e6; /* Add border to separate image from content */
+    }
+</style>
+
+{% extends 'base.html' %}
+{% block content %}
+<div class="content container-fluid">
+    <div class="page-header">
+        <div class="row align-items-center">
+            <div class="col">
+                <h3 class="page-title"><i class="fas fa-boxes"></i> Barcha Maxsulotlar</h3>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-xl-3 col-sm-6 col-12 d-flex">
+            <div class="card flex-fill insta sm-box" style="background: #333333">
+                <h6>{{ products_count }}</h6>
+                <p>Maxsulotlar<i class="fas fa-box" style="color: white; float: right; height: 60%;"></i></p>
+            </div>
+        </div>
+        <div class="col-xl-3 col-sm-6 col-12 d-flex">
+            <div class="card flex-fill insta sm-box" style="background: #333333">
+                <h6>{{ sold_items_count }}</h6>
+                <p>Bugun Sotildi<i class="fas fa-dolly" style="color: white; float: right; height: 60%;"></i></p>
+            </div>
+        </div>
+        <div class="col-xl-3 col-sm-6 col-12 d-flex">
+            <div class="card flex-fill insta sm-box" style="background: #333333">
+                <h6 style="color: white">{{ products_left }}</h6>
+                <p>Qolmagan<i class="fas fa-not-equal" style="color: white; float: right; height: 60%;"></i></p>
+            </div>
+        </div>
+        <div class="col-xl-3 col-sm-6 col-12 d-flex">
+            <div class="card flex-fill insta sm-box" style="background: #333333">
+                <h6 style="color: white">{{ nasiya_count }}</h6>
+                <p>Qarzdorlar<i class="fas fa-hand-holding-usd" style="float: right; height: 60%;"></i></p>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="card card-table">
+                <div class="card-body">
+                    <div class="table-responsive table-hover">
+                        <table class="data-table table" style="table-layout: ;">
+                            <thead class="thead-light">
+                                <tr>
+                                    <th style="color: black">Maxsulot</th>
+                                    <th style="color: black">Tarif</th>
+                                    <th style="color: black">Narxi</th>
+                                    <th style="color: black">Qolgan Soni</th>
+                                    <th style="color: black">Xarakat</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for product in products %}
+                                <tr>
+                                    <td style="font-size: 16px; font-weight: bold;">
+                                        <a href="{% url 'product_detail' pk=product.pk %}">{{ product.name }}</a>
+                                    </td>
+                                    <td style="color: lightslategray; font-size: 16px">{{ product.description }}</td>
+                                    <td style="color: lightslategray; font-size: 16px">{{ product.price }}</td>
+                                    <td style="color: lightslategray; font-size: 16px">{{ product.quantity }}</td>
+                                    <td class="text-right">
+                                        <div class="actions">
+                                            {% if product.quantity > 0 %}
+                                            <a href="{% url 'sell_product' pk=product.pk %}" class="btn btn-sm bg-success-light mr-2">
+                                                <i style="font-size: 14px; font-weight: bold;">Sotish</i>
+                                            </a>
+                                            {% else %}
+                                            <button class="btn btn-sm bg-secondary-light mr-2" disabled>
+                                                <i style="font-size: 14px; font-weight: bold;">Sotish</i>
+                                            </button>
+                                            {% endif %}
+                                        </div>
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

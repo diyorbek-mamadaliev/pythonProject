@@ -18,7 +18,53 @@
 <style>
    body {
   font-family: Arial, sans-serif;
-  background-color: #FBECE2;
+  background-color: white;
+}
+   .dataTables_filter {
+    margin-bottom: 20px;
+}
+
+.dataTables_filter label {
+    display: flex;
+    align-items: center;
+}
+
+.dataTables_filter input[type="search"] {
+    margin-left: 10px;
+    padding: 10px 20px;
+    border: 1px solid #ced4da;
+    border-radius: 15px;
+    background-color: #f8f9fa;
+    outline: none;
+    transition: all 0.3s;
+    width: 100%; /* Occupy full width available */
+    max-width: 100%;
+}
+
+.dataTables_filter input[type="search"]:focus {
+    border-color: #80bdff;
+    box-shadow: 0 0 5px rgba(128, 189, 255, 0.5);
+}
+
+   .dataTables_length {
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+}
+
+.dataTables_length label {
+    display: none;
+}
+
+.dataTables_length select {
+    display: none;
+}
+
+   .dataTables_paginate {
+    display: none;
+}
+   .dataTables_info {
+    display: none;
 }
 </style>
    <body>
@@ -38,7 +84,15 @@
       <script src="{% static 'assets/plugins/slimscroll/jquery.slimscroll.min.js' %}"></script>
       <script src="{% static 'assets/plugins/apexchart/apexcharts.min.js' %}"></script>
       <script src="{% static 'assets/plugins/apexchart/chart-data.js' %}"></script>
+   <script src="https://cdn.datatables.net/1.11.3/js/jquery.dataTables.min.js"></script>
       <script src="{% static 'assets/js/script.js' %}"></script>
+
+   <script>
+        $(document).ready(function() {
+            $('.data-table').DataTable();
+            $('.dataTables_filter label input[type="search"]').attr('placeholder', 'Qidiruv');
+        });
+    </script>
    </body>
 
 </html>

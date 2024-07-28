@@ -1,90 +1,138 @@
-from django.shortcuts import render,redirect,HttpResponse
-import requests
-from django.http import JsonResponse
-import openai
-from openai import api_key
-import requests
-import json
-from IPython.display import HTML
+import pytz
+from django.contrib import messages
+from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth.decorators import login_required
+from django.utils import timezone
 
-API_KEY = "YEA0AN5T0V1YRL33L93469UXAE58X14AU1I"
-API_KEY2 = 'IA2RXD0U0MXL1UDB3PRKSXIQWNIR88QXMM5'
-API_KEY3 = 'ZM53SKKYP209H3IQ3L735PUUN9WEOGPFZ13'
-API_KEY4 = 'ZM53SKKYP209H3IQ3L735PUUN9WEOGPFZ13'
+from app.models import Product, SoldItem
+from app.forms import SellProductForm, SoldItemForm  # Assuming you create a form for selling products
+@login_required
+def product_list(request):
+    local_tz = pytz.timezone('Asia/Tashkent')  # UTC +5
+    local_time = timezone.now().astimezone(local_tz)
+
+    today = local_time.date()
+    products = Product.objects.all()
+    products_count = Product.objects.count()
+    products_left_count = Product.objects.filter(quantity=0).count()
+    sold_items_count = SoldItem.objects.filter(sold_at__date=today).count
+    nasiya_sold_items = SoldItem.objects.filter(payment_type='online').count
+
+    return render(request, 'Hod/product_list.html', {'products': products, 'products_count': products_count, 'sold_items_count': sold_items_count, 'nasiya_count': nasiya_sold_items, 'products_left': products_left_count})
+
+def list_sold_items(request):
+    local_tz = pytz.timezone('Asia/Tashkent')  # UTC +5
+
+    # Get the current time in the local timezone
+    local_time = timezone.now().astimezone(local_tz)
+
+    # Get the local date
+    today = local_time.date()
+
+    print(f"Today's local date: {today}")  # Debug print statement
+
+    # Filter sold items by the local date
+    sold_items = SoldItem.objects.filter(sold_at__date=today)
+
+    print(f"Sold items today: {sold_items}")  # Debug print statement
+
+    return render(request, 'Hod/list_sold_items.html', {'sold_items': sold_items})
+@login_required
+def product_detail(request, pk):
+    product = get_object_or_404(Product, pk=pk)
+    return render(request, 'Hod/product_detail.html', {'product': product})
+@login_required
+def product_create(request):
+    if request.method == 'POST':
+        name = request.POST.get('name')
+        description = request.POST.get('description')
+        quantity = request.POST.get('quantity')
+        price = request.POST.get('price')
+        Product.objects.create(name=name, description=description, quantity=quantity, price=price)
+        return redirect('product_list')
+    return render(request, 'Hod/product_form.html')
+@login_required
+def product_edit(request, pk):
+    product = get_object_or_404(Product, pk=pk)
+    if request.method == 'POST':
+        product.name = request.POST.get('name')
+        product.description = request.POST.get('description')
+        product.quantity = request.POST.get('quantity')
+        product.price = request.POST.get('price')
+        product.save()
+        return redirect('product_list')
+    return render(request, 'Hod/product_form.html', {'product': product})
+@login_required
+def product_delete(request, pk):
+    product = get_object_or_404(Product, pk=pk)
+    if request.method == 'POST':
+        product.delete()
+        return redirect('product_list')
+    return render(request, 'Hod/product_edit.html', {'product': product})
+
+@login_required
+def sell_product(request, pk):
+    product = get_object_or_404(Product, pk=pk)
+    if request.method == 'POST':
+        form = SellProductForm(request.POST)
+        if form.is_valid():
+            quantity_sold = form.cleaned_data['quantity_sold']
+            payment_type = form.cleaned_data['payment_type']
+            comment = form.cleaned_data['comment']
+            if quantity_sold <= product.quantity:
+                SoldItem.objects.create(
+                    product=product,
+                    quantity_sold=quantity_sold,
+                    payment_type=payment_type,
+                    comment=comment
+                )
+                product.quantity -= quantity_sold
+                product.save()
+                messages.success(request, 'Sotildi')
+                return redirect('product_list')
+    else:
+        form = SellProductForm()
+
+    return render(request, 'Hod/sell_product.html', {'form': form, 'product': product})
+
+def nasiya_sold_items(request):
+    sold_items = SoldItem.objects.filter(payment_type='online')
+    return render(request, 'Hod/nasiya_sold_items.html', {'sold_items': sold_items})
 
 
-def HOME(request):
-    return render(request, 'Hod/home.html')
+def edit_sold_item(request, pk):
+    sold_item = get_object_or_404(SoldItem, pk=pk)
+    if request.method == 'POST':
+        form = SoldItemForm(request.POST, instance=sold_item)
+        if form.is_valid():
+            form.save()
+            return redirect('nasiya_sold_items')
+    else:
+        form = SoldItemForm(instance=sold_item)
 
-def CHEM(request):
-    return render(request, 'Hod/chem.html')
+    return render(request, 'Hod/edit_sold_item.html', {'form': form, 'sold_item': sold_item})
 
-def BIO(request):
-    return render(request, 'Hod/bio.html')
+def out_of_stock_products(request):
+    products = Product.objects.filter(quantity=0)
+    return render(request, 'Hod/out_of_stock_products.html', {'products': products})
 
-def BOT(request):
-    return render(request, 'Hod/bot.html')
+def today_sales_report(request):
+    # Define your local timezone
+    local_tz = pytz.timezone('Asia/Tashkent')  # UTC +5
 
+    # Get the current time in the local timezone
+    local_time = timezone.now().astimezone(local_tz)
 
-import requests
+    # Get the local date
+    today = local_time.date()
 
-def hod_chat(request):
-    if request.method == 'POST' and request.META.get('HTTP_X_REQUESTED_WITH') == 'XMLHttpRequest':
-        input_text = request.POST.get('input_text', '')  # Get the input text from the AJAX request
+    # Filter sold items by the local date
+    sold_items = SoldItem.objects.filter(sold_at__date=today)
 
-        url = "https://chatgpt-api7.p.rapidapi.com/ask"  # Set API URL
-        payload = {"query": input_text,
-                   "wordLimit": "1024"}
-        headers = {
-            "Content-Type": "application/json",
-            "X-RapidAPI-Key": "eba8330802mshbce627085fbb152p1609f5jsnc3bcb8954510",
-            "X-RapidAPI-Host": "chatgpt-api7.p.rapidapi.com"
-        }
+    # Calculate the total price
+    total_price = sum(item.product.price * item.quantity_sold for item in sold_items)
 
-        response = requests.post(url, json=payload, headers=headers)
-        generated_text = response.json()
-
-        generated_text_str = json.dumps(generated_text)  # Convert generated_text to a string
-
-        return JsonResponse({'generated_text': generated_text_str})
-
-    return JsonResponse({'error': 'Invalid request'})
-
-
-
-def chem_chat(request):
-    if request.method == 'POST' and request.META.get('HTTP_X_REQUESTED_WITH') == 'XMLHttpRequest':
-        input_text = request.POST.get('input_text', '')  # Get the input text from the AJAX request
-
-        url = f"https://api.betterapi.net/youchat?inputs={input_text}&key={API_KEY2}"  # Set API URL
-        response = requests.get(url).json()  # Load JSON from API
-        generated_text = response.get('generated_text', '')  # Extract the generated text
-
-        return JsonResponse({'generated_text': generated_text})
-
-    return JsonResponse({'error': 'Invalid request'})
-
-def bio_chat(request):
-    if request.method == 'POST' and request.META.get('HTTP_X_REQUESTED_WITH') == 'XMLHttpRequest':
-        input_text = request.POST.get('input_text', '')  # Get the input text from the AJAX request
-
-        url = f"https://api.betterapi.net/youchat?inputs={input_text}&key={API_KEY3}"  # Set API URL
-        response = requests.get(url).json()  # Load JSON from API
-        generated_text = response.get('generated_text', '')  # Extract the generated text
-
-        return JsonResponse({'generated_text': generated_text})
-
-    return JsonResponse({'error': 'Invalid request'})
-
-def bot_chat(request):
-    if request.method == 'POST' and request.META.get('HTTP_X_REQUESTED_WITH') == 'XMLHttpRequest':
-        input_text = request.POST.get('input_text', '')  # Get the input text from the AJAX request
-
-        url = f"https://api.betterapi.net/youchat?inputs={input_text}&key={API_KEY4}"  # Set API URL
-        response = requests.get(url).json()  # Load JSON from API
-        generated_text = response.get('generated_text', '')  # Extract the generated text
-
-        return JsonResponse({'generated_text': generated_text})
-
-    return JsonResponse({'error': 'Invalid request'})
+    return render(request, 'Hod/today_sales_report.html', {
+        'sold_items': sold_items,
+        'total_price': total_price,
+    })
